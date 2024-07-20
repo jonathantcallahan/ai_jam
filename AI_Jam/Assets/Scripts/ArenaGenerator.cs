@@ -53,7 +53,7 @@ public class ArenaGenerator : MonoBehaviour
 
     bool IsPositionOccupied(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapBox(position, characterSize, collisionLayer);
+        Collider[] colliders = Physics.OverlapBox(position, characterSize, Quaternion.identity, collisionLayer);
         return colliders.Length > 0;
     }
 
@@ -64,6 +64,10 @@ public class ArenaGenerator : MonoBehaviour
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
                 potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 2, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
+                if (IsPositionOccupied(potentialPosition))
+                {
+                    unit.transform.position = potentialPosition;
+                }
 
             }
         }

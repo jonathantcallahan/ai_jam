@@ -16,10 +16,11 @@ public class GameController : MonoBehaviour
     void EnvironmentReset()
     {
         arenaGenerator = GetComponentInParent<ArenaGenerator>();
+        agents = GameObject.FindGameObjectsWithTag("agent");
+
         arenaGenerator.DespawnArenaObstacles();
         arenaGenerator.SpawnArenaObstacles();
-
-        agents = GameObject.FindGameObjectsWithTag("agent");
+        arenaGenerator.placeUnits(agents);
 
     }
 }
