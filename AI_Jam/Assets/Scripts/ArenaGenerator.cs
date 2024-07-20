@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ArenaGenerator : MonoBehaviour
@@ -7,11 +8,18 @@ public class ArenaGenerator : MonoBehaviour
     public GameObject barrierPrefab;
     public GameObject columnPrefab;
 
+
+    public LayerMask collisionLayer;
+    public int maxAttempts = 10;
+    public Vector3 characterSize = new Vector3(1, 1, 1);
+
     public Vector2 spawnArea;
     public int obstaclesCount;
     public int spawnCountVariance;
 
     public bool spawned;
+
+    private Vector3 potentialPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,12 +51,30 @@ public class ArenaGenerator : MonoBehaviour
         spawned = false;
     }
 
+    bool IsPositionOccupied(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapBox(position, characterSize, collisionLayer);
+        return colliders.Length > 0;
+    }
+
+    public void placeUnits(GameObject[] units)
+    {
+        foreach (var unit in units)
+        {
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
+            {
+                potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 2, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
+
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !spawned)
-            SpawnArenaObstacles();
-        else if (Input.GetKeyDown(KeyCode.Space) && spawned)
-            DespawnArenaObstacles();
+        //if (Input.GetKeyDown(KeyCode.Space) && !spawned)
+        //    SpawnArenaObstacles();
+        //else if (Input.GetKeyDown(KeyCode.Space) && spawned)
+        //    DespawnArenaObstacles();
     }
 }

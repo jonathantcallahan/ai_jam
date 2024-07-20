@@ -23,10 +23,13 @@ public class AgentController : Agent
 
     private Rigidbody rb;
 
+    EnvironmentParameters m_ResetParams;
+
     public override void Initialize()
     {
         cooldownTimer = cooldownTime;
         rb = GetComponent<Rigidbody>();
+
     }
 
 
