@@ -34,7 +34,6 @@ public class AgentController : Agent
     //cont[0] = speed, cont[1] = yaw, disc[0] = shoot
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        Debug.Log("Heuristic");
         var continuousActionsOut = actionsOut.ContinuousActions;
         if(Input.GetKey(KeyCode.W))
         {
@@ -62,7 +61,6 @@ public class AgentController : Agent
         }
         var continuousActions = actions.ContinuousActions;
         var discreteActions = actions.DiscreteActions;
-        Debug.Log(continuousActions);
 
         rb.linearVelocity = transform.forward * continuousActions[0];
 
@@ -85,7 +83,7 @@ public class AgentController : Agent
             }
         }
 
-        if (continuousActions[2] == 1 && !cooldown)
+        if (discreteActions[0] == 1 && !cooldown)
         {
             Shoot();
         }

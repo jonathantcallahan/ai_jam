@@ -333,7 +333,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
+  MaxStep: 5000
   yawSpeed: 100
   cooldownTime: 2
   rotateSpeed: 1
