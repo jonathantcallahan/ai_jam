@@ -50,7 +50,9 @@ public class AgentController : Agent
         {
             continuousActionsOut[1] += rotateSpeed;
         }
+        Debug.Log("Discreet actions");
         var discreteActionsOut = actionsOut.DiscreteActions;
+        Debug.Log(discreteActionsOut);
         discreteActionsOut[0] = Input.GetKey(KeyCode.Space) ? 1 : 0;
     }
 
@@ -78,7 +80,7 @@ public class AgentController : Agent
 
         if (cooldown)
         {
-            cooldownTimer -= Time.deltaTime;
+            cooldownTimer -= .02f;
             if (cooldownTimer <= 0)
             {
                 cooldown = false;
@@ -89,12 +91,15 @@ public class AgentController : Agent
         if (discreteActions[0] == 1 && !cooldown)
         {
             Shoot();
+            cooldownTimer = 2f;
+            cooldown = true;
         }
     }
 
     private void Shoot()
     {
-        Physics.Raycast(transform.position + transform.forward, transform.forward, out RaycastHit hit);
+        Debug.Log("Raycast shot trigger")
+        Physics.Raycast(transform.position, transform.forward, out RaycastHit hit);
         if (hit.collider != null)
         {
             var controller = hit.collider.gameObject.GetComponent<AgentController>();
