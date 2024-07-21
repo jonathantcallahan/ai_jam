@@ -76,9 +76,24 @@ public class ArenaGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space) && !spawned)
-        //    SpawnArenaObstacles();
-        //else if (Input.GetKeyDown(KeyCode.Space) && spawned)
-        //    DespawnArenaObstacles();
+        int CountActiveAgents()
+        {
+            int activeCount = 0;
+            GameObject[] agents = GameObject.FindGameObjectsWithTag("agent");
+            foreach (GameObject agent in agents) {
+                AgentController agentController = agent.GetComponent<AgentController>();
+                if (agentController != null && !agentController.dead)
+                    activeCount++;
+                {
+                    
+                }
+            }
+            return activeCount;
+        }
+        int remainingPlayers = CountActiveAgents();
+        if (remainingPlayers < 2)
+        {
+
+        }
     }
 }

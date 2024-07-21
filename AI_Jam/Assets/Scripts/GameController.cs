@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
 
         arenaGenerator.DespawnArenaObstacles();
         arenaGenerator.SpawnArenaObstacles();
-        arenaGenerator.placeUnits(agents);
+        //arenaGenerator.placeUnits(agents);
 
     }
 }

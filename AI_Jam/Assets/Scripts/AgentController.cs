@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.VisualScripting;
 using Unity.MLAgents.Actuators;
+using System.Runtime.CompilerServices;
 
 public class AgentController : Agent
 {
@@ -22,6 +23,13 @@ public class AgentController : Agent
     // gun effects
     public Vector3 deadLocation;
 
+    // Respawning
+    private Vector3 potentialPosition;
+    public LayerMask collisionLayer;
+    public int maxAttempts = 10;
+    public Vector3 characterSize = new Vector3(1, 1, 1);
+    public Vector2 spawnArea;
+
     private float smoothYawChange = 0f;
 
     private Rigidbody rb;
@@ -32,6 +40,7 @@ public class AgentController : Agent
     {
         cooldownTimer = cooldownTime;
         rb = GetComponent<Rigidbody>();
+        SpawnUnit();
 
     }
 
@@ -109,10 +118,37 @@ public class AgentController : Agent
             var controller = hit.collider.gameObject.GetComponent<AgentController>();
             if (controller != null)
             {
-                controller.dead = true;
-                deadLocation = new Vector3(0f, -15f, 0f);
-                controller.transform.position = deadLocation;
+                Debug.Log("ENEMY HIT");
+                EndEpisode();
+                //controller.dead = true;
+                //deadLocation = new Vector3(0f, -15f, 0f);
+                //controller.transform.position = deadLocation;
                 SetReward(1.0f);
+                controller.SetReward(-1.0f);
+                //controller.EndEpisode();
+            }
+        }
+    }
+
+    public override void OnEpisodeBegin()
+    {
+        SpawnUnit();
+    }
+
+    private void SpawnUnit()
+    {
+        bool IsPositionOccupied(Vector3 position)
+        {
+            Collider[] colliders = Physics.OverlapBox(position, characterSize, Quaternion.identity, collisionLayer);
+            return colliders.Length > 0;
+        }
+
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
+        {
+            potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 2, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
+            if (IsPositionOccupied(potentialPosition))
+            {
+                transform.position = potentialPosition;
             }
         }
     }
