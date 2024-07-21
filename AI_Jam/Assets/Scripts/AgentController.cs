@@ -19,6 +19,9 @@ public class AgentController : Agent
     public float yaw;
     public float speed;
 
+    // gun effects
+    public Vector3 deadLocation;
+
     private float smoothYawChange = 0f;
 
     private Rigidbody rb;
@@ -98,16 +101,18 @@ public class AgentController : Agent
 
     private void Shoot()
     {
-        Debug.Log("Raycast shot trigger")
-        Physics.Raycast(transform.position, transform.forward, out RaycastHit hit);
+        Debug.Log("Raycast shot trigger");
+        Physics.Raycast(transform.position + transform.forward, transform.forward * 50f, out RaycastHit hit, 25f);
+        Debug.DrawLine(transform.position, hit.point, Color.red, 0.2f);
         if (hit.collider != null)
         {
             var controller = hit.collider.gameObject.GetComponent<AgentController>();
             if (controller != null)
             {
                 controller.dead = true;
+                deadLocation = new Vector3(0f, -15f, 0f);
+                controller.transform.position = deadLocation;
                 SetReward(1.0f);
-                Gizmos.DrawRay(transform.position + transform.forward, transform.forward * 10);
             }
         }
     }
