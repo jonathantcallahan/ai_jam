@@ -12,6 +12,7 @@ public class ArenaGenerator : MonoBehaviour
     public LayerMask collisionLayer;
     public int maxAttempts = 10;
     public Vector3 characterSize = new Vector3(1, 1, 1);
+    private bool positionHitDetect;
 
     public Vector2 spawnArea;
     public int obstaclesCount;
@@ -21,10 +22,6 @@ public class ArenaGenerator : MonoBehaviour
 
     private Vector3 potentialPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
 
     public void SpawnArenaObstacles()
     {
@@ -53,8 +50,9 @@ public class ArenaGenerator : MonoBehaviour
 
     bool IsPositionOccupied(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapBox(position, characterSize, Quaternion.identity, collisionLayer);
-        return colliders.Length > 0;
+        positionHitDetect = Physics.BoxCast(position, characterSize * 3, transform.forward, Quaternion.identity, 3f);
+            //OverlapBox(position, characterSize, Quaternion.identity);
+        return positionHitDetect;
     }
 
     public void placeUnits(GameObject[] units)
@@ -63,7 +61,7 @@ public class ArenaGenerator : MonoBehaviour
         {
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 0.5f, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
+                potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 0.75f, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
                 Debug.Log("Attempting to place enemy");
                 if (!IsPositionOccupied(potentialPosition))
                 {
@@ -76,6 +74,7 @@ public class ArenaGenerator : MonoBehaviour
     }
 
     // Update is called once per frame
+    /*
     void Update()
     {
         int CountActiveAgents()
@@ -98,4 +97,5 @@ public class ArenaGenerator : MonoBehaviour
 
         }
     }
+    */
 }

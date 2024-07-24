@@ -215,11 +215,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1568859822 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3101570138223368471, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
-  m_PrefabInstance: {fileID: 4834955458150855233}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1800293437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -242,7 +237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -365,7 +360,8 @@ MonoBehaviour:
     m_Bits: 0
   maxAttempts: 10
   characterSize: {x: 1, y: 1, z: 1}
-  spawnArea: {x: 0, y: 0}
+  spawnArea: {x: 25, y: 12}
+  enemy: {fileID: 510913424378823155, guid: 82908cb8bc74bf2498ad78c2ce823a9b, type: 3}
 --- !u!114 &1800293445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,30 +605,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1468788511801261929, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1800293438}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3101570138223368471, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4834955458150855238}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
 --- !u!4 &4834955458150855236 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1468788511801261929, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
   m_PrefabInstance: {fileID: 4834955458150855233}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4834955458150855238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1568859822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f8b09eba85f72d419f73de13c2a1c63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agents: []
-  enemy: {fileID: 510913424378823155, guid: 82908cb8bc74bf2498ad78c2ce823a9b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -4,20 +4,18 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject[] agents;
-    public GameObject enemy;
+    //public GameObject[] agents;
+    //public GameObject enemy;
 
-    private List<GameObject> enemyList = new List<GameObject>();
+    //private List<GameObject> enemyList = new List<GameObject>();
+    //private GameObject arenaController;
 
-    public void Awake()
-    {
-        Academy.Instance.OnEnvironmentReset += EnvironmentReset;
-    }
-
-    void EnvironmentReset()
+    //asdf
+    /*
+    public void EnvironmentReset()
     {
         ArenaGenerator arenaGenerator = GetComponentInParent<ArenaGenerator>();
-        agents = GameObject.FindGameObjectsWithTag("agent");
+        //agents = GameObject.FindGameObjectsWithTag("agent");
 
         arenaGenerator.DespawnArenaObstacles();
         arenaGenerator.SpawnArenaObstacles();
@@ -33,4 +31,5 @@ public class GameController : MonoBehaviour
         //arenaGenerator.placeUnits(agents);
 
     }
+    */
 }

@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using Unity.MLAgents.Actuators;
 using System.Runtime.CompilerServices;
 using Unity.MLAgents.Sensors;
+using System.Collections.Generic;
 
 public class AgentController : Agent
 {
@@ -27,22 +28,61 @@ public class AgentController : Agent
     // Respawning
     private Vector3 potentialPosition;
     public LayerMask collisionLayer;
-    public int maxAttempts = 10;
+    public int maxAttempts = 50;
     public Vector3 characterSize = new Vector3(1, 1, 1);
     public Vector2 spawnArea;
 
     private float smoothYawChange = 0f;
 
+    private Vector3 tempNewPosition;
+
+    private bool positionHitDetect;
+
+    public GameObject enemy;
+
+
     private Rigidbody rb;
 
     EnvironmentParameters m_ResetParams;
 
-    public override void Initialize()
+    private float remainingEnemies;
+
+    private GameObject[] enemies;
+    private GameObject arenaController;
+
+
+    public void EnvironmentReset()
     {
         cooldownTimer = cooldownTime;
-        rb = GetComponent<Rigidbody>();
-        SpawnUnit();
 
+        enemies = GameObject.FindGameObjectsWithTag("enemy");
+        foreach (GameObject enemyToDestroy in enemies)
+        {
+            Destroy(enemyToDestroy);
+        }
+
+        ArenaGenerator arenaGenerator = GetComponentInParent<ArenaGenerator>();
+        arenaGenerator.DespawnArenaObstacles();
+        arenaGenerator.SpawnArenaObstacles();
+
+        tempNewPosition = UnoccupiedPosition();
+        gameObject.transform.position = tempNewPosition;
+
+        for (int i = 0; i < 10; i++)
+        {
+            tempNewPosition = UnoccupiedPosition();
+            Debug.Log(tempNewPosition);
+            GameObject newEnemy = Instantiate(enemy, tempNewPosition, transform.rotation);
+
+        }
+
+
+
+    }
+
+    public override void Initialize()
+    {
+        //EnvironmentReset();
     }
 
 
@@ -50,30 +90,17 @@ public class AgentController : Agent
     //cont[0] = speed, cont[1] = yaw, disc[0] = shoot
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        
-        var continuousActionsOut = actionsOut.ContinuousActions;
-        if(Input.GetKey(KeyCode.W))
-        {
-            continuousActionsOut[0] = 1;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            continuousActionsOut[1] -= rotateSpeed;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            continuousActionsOut[1] += rotateSpeed;
-        }
-        //Debug.Log("Discreet actions");
         var discreteActionsOut = actionsOut.DiscreteActions;
-        //Debug.Log(discreteActionsOut);
+        var continousActionsOut = actionsOut.ContinuousActions;
         discreteActionsOut[0] = Input.GetKey(KeyCode.Space) ? 1 : 0;
+        continousActionsOut[0] = Input.GetAxisRaw("Vertical");
+        continousActionsOut[1] = Input.GetAxisRaw("Horizontal");
+
     }
 
     //cont[0] = speed, cont[1] = yaw, disc[0] = shoot
     public override void OnActionReceived(ActionBuffers actions)
     {
-        //Debug.Log(actions.DiscreteActions[0]);
 
         var continuousActions = actions.ContinuousActions;
         var discreteActions = actions.DiscreteActions;
@@ -83,16 +110,6 @@ public class AgentController : Agent
 
         GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * moveForward * Time.deltaTime);
         transform.Rotate(0f, moveRotate, 0f, Space.Self);
-        //rb.linearVelocity = transform.forward * continuousActions[0];
-
-        //var yawChange = continuousActions[1];
-        //smoothYawChange = Mathf.MoveTowards(smoothYawChange, yawChange, 2f * Time.fixedDeltaTime);
-
-        //Vector3 rotationVector = transform.rotation.eulerAngles;
-        //float yaw = rotationVector.y + smoothYawChange * Time.fixedDeltaTime * yawSpeed;
-
-        // Apply the new rotation
-        //transform.rotation = Quaternion.Euler(0f, yaw, 0f);
 
         if (cooldown)
         {
@@ -114,27 +131,31 @@ public class AgentController : Agent
 
     private void Shoot()
     {
-        //Debug.Log("Raycast shot trigger");
+
         Physics.Raycast(transform.position + transform.forward, transform.forward * 50f, out RaycastHit hit, 25f);
         Debug.DrawLine(transform.position, hit.point, Color.red, 0.2f);
         if (hit.collider != null)
         {
-            //var controller = hit.collider.gameObject.GetComponent<AgentController>();
+            
             var controller = hit.collider.gameObject;
             if (controller.tag == "enemy")
             {
-                //Debug.Log("ENEMY HIT");
-                EndEpisode();
-                //controller.dead = true;
-                //deadLocation = new Vector3(0f, -15f, 0f);
-                //controller.transform.position = deadLocation;
-                SetReward(1.0f);
+
                 Destroy(controller);
-                //controller.SetReward(-1.0f);
-                //controller.EndEpisode();
+                remainingEnemies = GameObject.FindGameObjectsWithTag("enemy").Length;
+                
+                if (remainingEnemies < 6)
+                {
+                    SetReward(3f);
+                    EndEpisode();
+                } else
+                {
+                    SetReward(1f);
+                }
+
             } else
             {
-                SetReward(0.01f);
+                SetReward(-0.05f);
             }
         }
     }
@@ -148,24 +169,40 @@ public class AgentController : Agent
 
     public override void OnEpisodeBegin()
     {
-        SpawnUnit();
+        tempNewPosition = UnoccupiedPosition();
+        gameObject.transform.position = tempNewPosition;
+        EnvironmentReset();
     }
 
-    private void SpawnUnit()
+    private Vector3 randomPosition()
     {
-        bool IsPositionOccupied(Vector3 position)
-        {
-            Collider[] colliders = Physics.OverlapBox(position, characterSize, Quaternion.identity, collisionLayer);
-            return colliders.Length > 0;
-        }
+        return new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 0.75f, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
+    }
 
+    private bool IsPositionOccupied(Vector3 position)
+    {
+        Collider[] positionHitDetect = Physics.OverlapBox(position, characterSize * 2, Quaternion.identity);
+
+        Debug.Log("Collider length");
+        Debug.Log(positionHitDetect.Length);
+        foreach (Object item in positionHitDetect)
+        {
+            Debug.Log(item.ToString());
+        }
+        return positionHitDetect.Length > 1;
+    }
+    public Vector3 UnoccupiedPosition()
+    {
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
-            potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 2, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
-            if (IsPositionOccupied(potentialPosition))
+            potentialPosition = randomPosition();
+
+            if (!IsPositionOccupied(potentialPosition))
             {
-                transform.position = potentialPosition;
-            }
+                return potentialPosition;
+            } 
         }
+        Debug.Log("No safe position found, returning most recent random position.");
+        return potentialPosition;
     }
 }
