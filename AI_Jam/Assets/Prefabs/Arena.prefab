@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 2555964279768829132}
   m_Layer: 0
   m_Name: Arena
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -377,6 +377,11 @@ MonoBehaviour:
   spawnTransform: {fileID: 2380138276407511270}
   barrierPrefab: {fileID: 699541393290696030, guid: 0ddb5fbe024c12047b02a4e64522384e, type: 3}
   columnPrefab: {fileID: 52204066331704762, guid: ead1aabe06b04c341bc10c9c10c8588b, type: 3}
+  collisionLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxAttempts: 10
+  characterSize: {x: 1, y: 1, z: 1}
   spawnArea: {x: 20, y: 13}
   obstaclesCount: 20
   spawnCountVariance: 2

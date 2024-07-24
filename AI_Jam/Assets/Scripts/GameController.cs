@@ -1,13 +1,14 @@
 using UnityEngine;
 using Unity.MLAgents;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
-
-    public ArenaGenerator arenaGenerator;
     public GameObject[] agents;
-    public GameObject arena;
-    
+    public GameObject enemy;
+
+    private List<GameObject> enemyList = new List<GameObject>();
+
     public void Awake()
     {
         Academy.Instance.OnEnvironmentReset += EnvironmentReset;
@@ -15,11 +16,20 @@ public class GameController : MonoBehaviour
 
     void EnvironmentReset()
     {
-        arenaGenerator = GetComponentInParent<ArenaGenerator>();
+        ArenaGenerator arenaGenerator = GetComponentInParent<ArenaGenerator>();
         agents = GameObject.FindGameObjectsWithTag("agent");
 
         arenaGenerator.DespawnArenaObstacles();
         arenaGenerator.SpawnArenaObstacles();
+        
+        for (int i = 0; i < 10; i++) { 
+            GameObject newEnemy = Instantiate(enemy);
+            enemyList.Add(newEnemy);
+
+        //    arenaGenerator.placeUnits(newEnemy);
+        }
+        arenaGenerator.placeUnits(enemyList.ToArray());
+
         //arenaGenerator.placeUnits(agents);
 
     }

@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 1468788511801261929}
   m_Layer: 0
   m_Name: Arena EndZone
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

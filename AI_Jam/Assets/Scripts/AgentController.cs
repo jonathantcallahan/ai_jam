@@ -3,6 +3,7 @@ using Unity.MLAgents;
 using Unity.VisualScripting;
 using Unity.MLAgents.Actuators;
 using System.Runtime.CompilerServices;
+using Unity.MLAgents.Sensors;
 
 public class AgentController : Agent
 {
@@ -49,6 +50,7 @@ public class AgentController : Agent
     //cont[0] = speed, cont[1] = yaw, disc[0] = shoot
     public override void Heuristic(in ActionBuffers actionsOut)
     {
+        
         var continuousActionsOut = actionsOut.ContinuousActions;
         if(Input.GetKey(KeyCode.W))
         {
@@ -62,33 +64,35 @@ public class AgentController : Agent
         {
             continuousActionsOut[1] += rotateSpeed;
         }
-        Debug.Log("Discreet actions");
+        //Debug.Log("Discreet actions");
         var discreteActionsOut = actionsOut.DiscreteActions;
-        Debug.Log(discreteActionsOut);
+        //Debug.Log(discreteActionsOut);
         discreteActionsOut[0] = Input.GetKey(KeyCode.Space) ? 1 : 0;
     }
 
     //cont[0] = speed, cont[1] = yaw, disc[0] = shoot
     public override void OnActionReceived(ActionBuffers actions)
     {
-        if (dead)
-        {
-            SetReward(-1.0f);
-            EndEpisode();
-        }
+        //Debug.Log(actions.DiscreteActions[0]);
+
         var continuousActions = actions.ContinuousActions;
         var discreteActions = actions.DiscreteActions;
+        var moveForward = continuousActions[0];
+        var moveRotate = continuousActions[1];
 
-        rb.linearVelocity = transform.forward * continuousActions[0];
 
-        var yawChange = continuousActions[1];
-        smoothYawChange = Mathf.MoveTowards(smoothYawChange, yawChange, 2f * Time.fixedDeltaTime);
+        GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * moveForward * Time.deltaTime);
+        transform.Rotate(0f, moveRotate, 0f, Space.Self);
+        //rb.linearVelocity = transform.forward * continuousActions[0];
 
-        Vector3 rotationVector = transform.rotation.eulerAngles;
-        float yaw = rotationVector.y + smoothYawChange * Time.fixedDeltaTime * yawSpeed;
+        //var yawChange = continuousActions[1];
+        //smoothYawChange = Mathf.MoveTowards(smoothYawChange, yawChange, 2f * Time.fixedDeltaTime);
+
+        //Vector3 rotationVector = transform.rotation.eulerAngles;
+        //float yaw = rotationVector.y + smoothYawChange * Time.fixedDeltaTime * yawSpeed;
 
         // Apply the new rotation
-        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+        //transform.rotation = Quaternion.Euler(0f, yaw, 0f);
 
         if (cooldown)
         {
@@ -110,24 +114,36 @@ public class AgentController : Agent
 
     private void Shoot()
     {
-        Debug.Log("Raycast shot trigger");
+        //Debug.Log("Raycast shot trigger");
         Physics.Raycast(transform.position + transform.forward, transform.forward * 50f, out RaycastHit hit, 25f);
         Debug.DrawLine(transform.position, hit.point, Color.red, 0.2f);
         if (hit.collider != null)
         {
-            var controller = hit.collider.gameObject.GetComponent<AgentController>();
-            if (controller != null)
+            //var controller = hit.collider.gameObject.GetComponent<AgentController>();
+            var controller = hit.collider.gameObject;
+            if (controller.tag == "enemy")
             {
-                Debug.Log("ENEMY HIT");
+                //Debug.Log("ENEMY HIT");
                 EndEpisode();
                 //controller.dead = true;
                 //deadLocation = new Vector3(0f, -15f, 0f);
                 //controller.transform.position = deadLocation;
                 SetReward(1.0f);
-                controller.SetReward(-1.0f);
+                Destroy(controller);
+                //controller.SetReward(-1.0f);
                 //controller.EndEpisode();
+            } else
+            {
+                SetReward(0.01f);
             }
         }
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        
+        sensor.AddObservation(transform.position);
+
     }
 
     public override void OnEpisodeBegin()

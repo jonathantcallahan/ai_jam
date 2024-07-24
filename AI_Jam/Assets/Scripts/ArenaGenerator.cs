@@ -63,9 +63,11 @@ public class ArenaGenerator : MonoBehaviour
         {
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 2, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
-                if (IsPositionOccupied(potentialPosition))
+                potentialPosition = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 0.5f, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
+                Debug.Log("Attempting to place enemy");
+                if (!IsPositionOccupied(potentialPosition))
                 {
+                    Debug.Log("Successfully placed enemy");
                     unit.transform.position = potentialPosition;
                 }
 
