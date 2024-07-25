@@ -7,7 +7,7 @@ How to set up the ML Agents package
 run the following commands
 ```
 cd /path/to/project
-conda create <venv name> python==3.9.13
+conda create --name <venv name> python==3.9.13
 conda activate <venv name>
 pip3 install mlagents
 pip3 install protobuf==3.20.0
