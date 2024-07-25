@@ -28,7 +28,7 @@ public class AgentController : Agent
     // Respawning
     private Vector3 potentialPosition;
     public LayerMask collisionLayer;
-    public int maxAttempts = 50;
+    public int maxAttempts = 100;
     public Vector3 characterSize = new Vector3(1, 1, 1);
     public Vector2 spawnArea;
 
@@ -50,6 +50,18 @@ public class AgentController : Agent
     private GameObject[] enemies;
     private GameObject arenaController;
 
+    public Transform spawnTransform;
+
+    public GameObject barrierPrefab;
+    public GameObject columnPrefab;
+
+
+    
+    public int obstaclesCount;
+    public int spawnCountVariance;
+
+    public bool spawned;
+
 
     public void EnvironmentReset()
     {
@@ -61,9 +73,8 @@ public class AgentController : Agent
             Destroy(enemyToDestroy);
         }
 
-        ArenaGenerator arenaGenerator = GetComponentInParent<ArenaGenerator>();
-        arenaGenerator.DespawnArenaObstacles();
-        arenaGenerator.SpawnArenaObstacles();
+        DespawnArenaObstacles();
+        SpawnArenaObstacles();
 
         tempNewPosition = UnoccupiedPosition();
         gameObject.transform.position = tempNewPosition;
@@ -72,18 +83,33 @@ public class AgentController : Agent
         {
             tempNewPosition = UnoccupiedPosition();
             GameObject newEnemy = Instantiate(enemy, tempNewPosition, transform.rotation);
-
         }
-
-
-
     }
 
-    public override void Initialize()
+    public void SpawnArenaObstacles()
     {
-        //EnvironmentReset();
+        for (int i = 0; i < obstaclesCount + Random.Range(-spawnCountVariance, spawnCountVariance); i++)
+        {
+            var spawned = transform;
+            if (Random.Range(0, 2) == 0)
+                spawned = Instantiate(barrierPrefab, spawnTransform).transform;
+            else
+                spawned = Instantiate(columnPrefab, spawnTransform).transform;
+
+            spawned.position = new Vector3(Random.Range(-spawnArea.x / 2, spawnArea.x / 2), 2, Random.Range(-spawnArea.y / 2, spawnArea.y / 2));
+            spawned.Rotate(0, Random.Range(0, 360), 0);
+        }
+        spawned = true;
     }
 
+    public void DespawnArenaObstacles()
+    {
+        foreach (Transform child in spawnTransform)
+        {
+            Destroy(child.gameObject);
+        }
+        spawned = false;
+    }
 
 
     //cont[0] = speed, cont[1] = yaw, disc[0] = shoot
@@ -118,7 +144,6 @@ public class AgentController : Agent
                 cooldownTimer = cooldownTime;
             }
         }
-
         if (discreteActions[0] == 1 && !cooldown)
         {
             Shoot();
@@ -134,11 +159,9 @@ public class AgentController : Agent
         Debug.DrawLine(transform.position, hit.point, Color.red, 0.2f);
         if (hit.collider != null)
         {
-            
             var controller = hit.collider.gameObject;
             if (controller.tag == "enemy")
             {
-
                 Destroy(controller);
                 remainingEnemies = GameObject.FindGameObjectsWithTag("enemy").Length;
                 
@@ -151,10 +174,9 @@ public class AgentController : Agent
                 {
                     SetReward(1f);
                 }
-
             } else
             {
-                SetReward(-0.05f);
+                SetReward(-0.2f);
             }
         }
     }
@@ -188,7 +210,7 @@ public class AgentController : Agent
 
     private bool IsPositionOccupied(Vector3 position)
     {
-        Collider[] positionHitDetect = Physics.OverlapBox(position, characterSize * 2, Quaternion.identity);
+        Collider[] positionHitDetect = Physics.OverlapBox(position, characterSize / 2, Quaternion.identity);
         foreach (Object item in positionHitDetect)
         {
             //Debug.Log(item.ToString());
