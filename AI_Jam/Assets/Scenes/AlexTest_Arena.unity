@@ -118,6 +118,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &1046682819 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2380138276407511270, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
+  m_PrefabInstance: {fileID: 4834955458150855233}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1364764602
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,13 +213,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1364764602}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: -0.54, y: 3.91, z: 0.94}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 200, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &1800293437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -315,7 +320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BrainParameters:
     VectorObservationSize: 3
-    NumStackedVectorObservations: 1
+    NumStackedVectorObservations: 5
     m_ActionSpec:
       m_NumContinuousActions: 2
       BranchSizes: 0200000002000000
@@ -325,7 +330,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 3
-  m_BehaviorType: 1
+  m_BehaviorType: 0
   m_BehaviorName: AgentController
   TeamId: 0
   m_UseChildSensors: 1
@@ -362,6 +367,12 @@ MonoBehaviour:
   characterSize: {x: 1, y: 1, z: 1}
   spawnArea: {x: 30, y: 15}
   enemy: {fileID: 510913424378823155, guid: 82908cb8bc74bf2498ad78c2ce823a9b, type: 3}
+  spawnTransform: {fileID: 1046682819}
+  barrierPrefab: {fileID: 699541393290696030, guid: 0ddb5fbe024c12047b02a4e64522384e, type: 3}
+  columnPrefab: {fileID: 52204066331704762, guid: ead1aabe06b04c341bc10c9c10c8588b, type: 3}
+  obstaclesCount: 15
+  spawnCountVariance: 5
+  spawned: 0
 --- !u!114 &1800293445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,7 +501,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 46.7
+  field of view: 2.3
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -517,7 +528,7 @@ Transform:
   m_GameObject: {fileID: 1959304084}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 500, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -594,6 +605,10 @@ PrefabInstance:
     - target: {fileID: 6407999295465348181, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7209260067898755490, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
+      propertyPath: m_TagString
+      value: floor
       objectReference: {fileID: 0}
     - target: {fileID: 7286351627351376910, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
       propertyPath: m_LocalPosition.y
