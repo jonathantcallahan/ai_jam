@@ -233,7 +233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.59
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -241,7 +241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2.37
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -346,7 +346,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
+  MaxStep: 500000
   yawSpeed: 100
   cooldownTime: 2
   rotateSpeed: 1
@@ -360,7 +360,7 @@ MonoBehaviour:
     m_Bits: 0
   maxAttempts: 10
   characterSize: {x: 1, y: 1, z: 1}
-  spawnArea: {x: 25, y: 12}
+  spawnArea: {x: 30, y: 15}
   enemy: {fileID: 510913424378823155, guid: 82908cb8bc74bf2498ad78c2ce823a9b, type: 3}
 --- !u!114 &1800293445
 MonoBehaviour:

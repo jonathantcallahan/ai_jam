@@ -71,7 +71,6 @@ public class AgentController : Agent
         for (int i = 0; i < 10; i++)
         {
             tempNewPosition = UnoccupiedPosition();
-            Debug.Log(tempNewPosition);
             GameObject newEnemy = Instantiate(enemy, tempNewPosition, transform.rotation);
 
         }
@@ -101,7 +100,6 @@ public class AgentController : Agent
     //cont[0] = speed, cont[1] = yaw, disc[0] = shoot
     public override void OnActionReceived(ActionBuffers actions)
     {
-
         var continuousActions = actions.ContinuousActions;
         var discreteActions = actions.DiscreteActions;
         var moveForward = continuousActions[0];
@@ -144,10 +142,11 @@ public class AgentController : Agent
                 Destroy(controller);
                 remainingEnemies = GameObject.FindGameObjectsWithTag("enemy").Length;
                 
-                if (remainingEnemies < 6)
+                if (remainingEnemies < 9)
                 {
                     SetReward(3f);
                     EndEpisode();
+                    Debug.Log("Episode ended");
                 } else
                 {
                     SetReward(1f);
@@ -160,6 +159,15 @@ public class AgentController : Agent
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag != "floor")
+        {
+            Debug.Log("Collided with " + collision.gameObject.tag);
+            SetReward(-0.5f);
+        }
+    }
+
     public override void CollectObservations(VectorSensor sensor)
     {
         
@@ -169,8 +177,7 @@ public class AgentController : Agent
 
     public override void OnEpisodeBegin()
     {
-        tempNewPosition = UnoccupiedPosition();
-        gameObject.transform.position = tempNewPosition;
+        Debug.Log("Episode begin triggered");
         EnvironmentReset();
     }
 
@@ -182,12 +189,9 @@ public class AgentController : Agent
     private bool IsPositionOccupied(Vector3 position)
     {
         Collider[] positionHitDetect = Physics.OverlapBox(position, characterSize * 2, Quaternion.identity);
-
-        Debug.Log("Collider length");
-        Debug.Log(positionHitDetect.Length);
         foreach (Object item in positionHitDetect)
         {
-            Debug.Log(item.ToString());
+            //Debug.Log(item.ToString());
         }
         return positionHitDetect.Length > 1;
     }
