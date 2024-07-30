@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.59
+      value: 0.625
       objectReference: {fileID: 0}
     - target: {fileID: 7992990295627186465, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -288,13 +288,13 @@ PrefabInstance:
       addedObject: {fileID: 1800293440}
     - targetCorrespondingSourceObject: {fileID: 2904910146557079835, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1800293445}
-    - targetCorrespondingSourceObject: {fileID: 2904910146557079835, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1800293446}
     - targetCorrespondingSourceObject: {fileID: 2904910146557079835, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1800293450}
+    - targetCorrespondingSourceObject: {fileID: 2904910146557079835, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1800293445}
   m_SourcePrefab: {fileID: 100100000, guid: ca65b1c1a24417e42adbcb1ca1efcebd, type: 3}
 --- !u!4 &1800293438 stripped
 Transform:
@@ -319,8 +319,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 3
-    NumStackedVectorObservations: 5
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 10
     m_ActionSpec:
       m_NumContinuousActions: 2
       BranchSizes: 0200000002000000
@@ -328,9 +328,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: cebb095eed16f8a41abca1583015bcb0, type: 3}
   m_InferenceDevice: 3
-  m_BehaviorType: 0
+  m_BehaviorType: 2
   m_BehaviorName: AgentController
   TeamId: 0
   m_UseChildSensors: 1
@@ -351,28 +351,17 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 500000
-  yawSpeed: 100
-  cooldownTime: 2
-  rotateSpeed: 1
-  cooldown: 0
-  dead: 0
-  yaw: 0
-  speed: 0
-  deadLocation: {x: 0, y: 0, z: 0}
-  collisionLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  MaxStep: 4000
+  cooldownTime: 5
+  barrierPrefab: {fileID: 699541393290696030, guid: 0ddb5fbe024c12047b02a4e64522384e, type: 3}
+  columnPrefab: {fileID: 52204066331704762, guid: ead1aabe06b04c341bc10c9c10c8588b, type: 3}
+  enemy: {fileID: 510913424378823155, guid: 82908cb8bc74bf2498ad78c2ce823a9b, type: 3}
+  obstaclesCount: 15
+  spawnCountVariance: 5
   maxAttempts: 10
   characterSize: {x: 1, y: 1, z: 1}
   spawnArea: {x: 30, y: 15}
-  enemy: {fileID: 510913424378823155, guid: 82908cb8bc74bf2498ad78c2ce823a9b, type: 3}
   spawnTransform: {fileID: 1046682819}
-  barrierPrefab: {fileID: 699541393290696030, guid: 0ddb5fbe024c12047b02a4e64522384e, type: 3}
-  columnPrefab: {fileID: 52204066331704762, guid: ead1aabe06b04c341bc10c9c10c8588b, type: 3}
-  obstaclesCount: 15
-  spawnCountVariance: 5
-  spawned: 0
 --- !u!114 &1800293445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,16 +419,17 @@ MonoBehaviour:
   m_DetectableTags:
   - enemy
   - obstacle
-  m_RaysPerDirection: 5
-  m_MaxRayDegrees: 70
+  - wall
+  m_RaysPerDirection: 6
+  m_MaxRayDegrees: 60
   m_SphereCastRadius: 0.5
   m_RayLength: 20
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
-  m_ObservationStacks: 1
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_ObservationStacks: 3
+  rayHitColor: {r: 0.5503144, g: 1, b: 0.97884905, a: 1}
+  rayMissColor: {r: 0, g: 0.34260726, b: 0.4716981, a: 1}
   m_StartVerticalOffset: 0
   m_EndVerticalOffset: 0
 --- !u!1 &1959304084
@@ -546,6 +536,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 759841076866260887, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
+      propertyPath: m_TagString
+      value: wall
+      objectReference: {fileID: 0}
     - target: {fileID: 1468788511801261929, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -586,9 +580,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1504050210028056116, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
+      propertyPath: m_TagString
+      value: wall
+      objectReference: {fileID: 0}
     - target: {fileID: 2380138276407511270, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2738756123190927401, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
+      propertyPath: m_TagString
+      value: wall
       objectReference: {fileID: 0}
     - target: {fileID: 3101570138223368471, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
       propertyPath: m_Name
@@ -614,7 +616,12 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8950461090443412536, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
+      propertyPath: m_TagString
+      value: floor
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2555964279768829132, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1468788511801261929, guid: 5fffdb934542c994496bc4514bbe546e, type: 3}

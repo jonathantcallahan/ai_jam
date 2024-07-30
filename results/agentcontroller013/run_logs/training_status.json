@@ -1,0 +1,29 @@
+{
+    "AgentController": {
+        "checkpoints": [
+            {
+                "steps": 40000,
+                "file_path": "results\\agentcontroller013\\AgentController\\AgentController-40000.onnx",
+                "reward": -0.5000000596046448,
+                "creation_time": 1722012823.7208693,
+                "auxillary_file_paths": [
+                    "results\\agentcontroller013\\AgentController\\AgentController-40000.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 40000,
+            "file_path": "results\\agentcontroller013\\AgentController.onnx",
+            "reward": -0.5000000596046448,
+            "creation_time": 1722012823.7208693,
+            "auxillary_file_paths": [
+                "results\\agentcontroller013\\AgentController\\AgentController-40000.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.4.0+cu118"
+    }
+}
