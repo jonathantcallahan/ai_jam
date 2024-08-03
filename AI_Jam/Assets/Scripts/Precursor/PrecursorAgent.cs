@@ -3,13 +3,15 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class PrecursorAgent : Agent
 {
     public GameObject bullet;
     public GameObject area;
     private AreaController areaController;
-    private int totalScore = 0;
+    private float totalScore = 0;
+    private bool enemyInSights = false;
 
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -28,8 +30,7 @@ public class PrecursorAgent : Agent
         var moveForward = continuousActions[0];
         var moveRotate = continuousActions[1];
 
-        SetReward(-0.0001f);
-        GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * moveForward * Time.deltaTime);
+        GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * moveForward * Time.deltaTime * 3);
         transform.Rotate(0f, moveRotate, 0f, Space.Self);
         
         //if (discreteActions[0] == 1)
@@ -38,6 +39,24 @@ public class PrecursorAgent : Agent
         //}
 
         checkRayCast();
+
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 15f))
+        {
+            var controller = hit.collider.gameObject;
+            enemyInSights = controller.tag == "enemy";
+        }
+
+        if (enemyInSights) {
+            AddReward(.1f);
+            totalScore += 0.1f;
+            if (totalScore > 9)
+            {
+                EndEpisode();
+            }
+        } else
+        {
+            AddReward(-0.01f);
+        }
     }
 
     private void Shoot()
@@ -48,6 +67,12 @@ public class PrecursorAgent : Agent
 
     private void EnvironmentReset()
     {
+        var enemies = GameObject.FindGameObjectsWithTag("enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            Destroy(enemy);
+        }
+
         areaController = area.GetComponent<AreaController>();
         areaController.placeAgent(gameObject);
         areaController.instantiateEnemy();
@@ -65,20 +90,7 @@ public class PrecursorAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        
-        Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 10f);
-        var controller = hit.collider.gameObject;
-        var enemyInSights = controller ? controller.tag == "enemy" : false;
         sensor.AddObservation(enemyInSights ? 1 : 0);
-        if (enemyInSights) 
-        {
-            AddReward(1);
-            totalScore += 1;
-            if (totalScore > 9)
-            {
-                EndEpisode();
-            }
-        }
     }
 
     private void checkRayCast()
