@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1722650189",
+        "python_version": "3.9.13 (main, Oct 13 2022, 21:23:06) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\jonathancallahan\\anaconda3\\envs\\python3913clean\\Scripts\\mlagents-learn config/poca-soccer-copy.yaml --run-id=agent001 --train --force",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.4.0+cu118",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1722650195"
+    },
+    "total": 6.1592404,
+    "count": 1,
+    "self": 0.010836899999999261,
+    "children": {
+        "run_training.setup": {
+            "total": 0.11388320000000007,
+            "count": 1,
+            "self": 0.11388320000000007
+        },
+        "TrainerController.start_learning": {
+            "total": 6.0345203000000005,
+            "count": 1,
+            "self": 0.0005633999999989925,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 6.033936000000001,
+                    "count": 1,
+                    "self": 6.033936000000001
+                },
+                "trainer_threads": {
+                    "total": 1.300000000981072e-06,
+                    "count": 1,
+                    "self": 1.300000000981072e-06
+                },
+                "TrainerController._save_models": {
+                    "total": 1.9599999999897477e-05,
+                    "count": 1,
+                    "self": 1.9599999999897477e-05
+                }
+            }
+        }
+    }
+}

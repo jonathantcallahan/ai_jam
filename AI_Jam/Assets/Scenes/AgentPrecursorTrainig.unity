@@ -783,7 +783,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 500000
+  MaxStep: 10000
   bullet: {fileID: 6112443805463175797, guid: 3c8c3deee531cbf4f87560f7116f4358, type: 3}
   area: {fileID: 2015411442}
 --- !u!65 &1393224314
@@ -899,7 +899,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 1
+  m_BehaviorType: 0
   m_BehaviorName: ArmyMan
   TeamId: 0
   m_UseChildSensors: 1
@@ -951,7 +951,7 @@ MonoBehaviour:
   - obstacle
   m_RaysPerDirection: 25
   m_MaxRayDegrees: 72
-  m_SphereCastRadius: 0.5
+  m_SphereCastRadius: 0
   m_RayLength: 50
   m_RayLayerMask:
     serializedVersion: 2

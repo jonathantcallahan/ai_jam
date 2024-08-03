@@ -36,4 +36,24 @@ Agents
 020 - Doubled the number of enemies.
 021 - Increased batch size, buffer size, and rays per direction.
 022 - Same as before but not inhereting from existing model. Crash appeared to be related to changing model parameters.
-023 - Add cooldown as an observation. 
+023 - Add cooldown as an observation.
+
+PrecursorAgent
+024 - Crashed
+001 - Removed spherecast
+
+Enemy array
+5 x 36
+localDeg [10, 170, ... ]
+spotted [True, False, ... ]
+
+
+Stages for curriculum learning
+1. Find enemy 
+2. Find enemy and hold aim
+3. Find multiple enemies and hold aim
+4. Find multiple enemies with obstacles and hold aim
+4. Find multiple slow moving enemies with obstacles and hold aim
+5. Find multiple slow moving enemies with obstacles and hold aim and shoot
+6. Find multiple fast moving enemies with obstacles and shoot
+7. Find multiple fastt moving enemies with obstacles and shoot, and not get shot
